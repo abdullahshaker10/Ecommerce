@@ -21,4 +21,4 @@ blocks:
       jobs:
         - name: 'Job #1'
           commands:
-            - ls
+            - python manage.py makemigrations
