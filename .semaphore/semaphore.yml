@@ -21,6 +21,4 @@ blocks:
       jobs:
         - name: 'Job #1'
           commands:
-            - cd Ecommerce
-            - python manage.py makemigrations
-            - python manage.py migrate
+            - ls
