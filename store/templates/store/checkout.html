@@ -1,0 +1,65 @@
+
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+     <div class="row">
+		<div class="col-lg-6">
+			<div class="box-element" id="form-wrapper">
+				<hr>
+					<p>Shipping Information:</p>
+				<hr>
+				<form id="form" method="POST" >					
+						
+					{% csrf_token %}
+					{{ form.as_p }} 				  
+					<hr>
+					<input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+				</form>
+			</div>
+
+			<br>
+			<div class="box-element hidden" id="payment-info">
+				<small>Paypal Options</small>
+				<button id ="make-payment"> Make Payment</button>
+			</div>
+			
+		</div>
+
+		<div class="col-lg-6">
+			<div class="box-element">
+				<a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+				<hr>
+				<h3>Order Summary</h3>
+				<hr>
+				{% for item in items%}
+				<div class="cart-row">
+					<div style="flex:2"><img class="row-image" src={{item.product.imageURL}}></div>
+					<div style="flex:2"><p>{{item.product.name}}</p></div>
+					<div style="flex:1"><p>${{item.product.price}}</p></div>
+					<div style="flex:1"><p>x{{item.quantity}}</p></div>
+				</div>
+				{% endfor %}
+				<h5>Items:   {{num_items}}</h5>
+				<h5>Total:   ${{total}}</h5>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		let shipping = '{{shipping}}'
+		if (shipping == 'False'){
+			document.getElementById('form').innerHTML = '';
+		}
+
+
+		document.getElementById('make-payment').addEventListener('click', function(e){
+			
+			submitForm();	
+
+		})
+		function submitForm(){
+			alert('Transaction Complete');
+		}
+
+	</script>
+{% endblock content %}
