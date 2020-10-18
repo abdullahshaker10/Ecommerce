@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, UpdateView, View, CreateView, FormView
-from .models import *
+from django.views.generic import TemplateView, ListView, View, CreateView, FormView
+from .models import Order, Product, OrderItem, ShippingAddress
 import pdb
 import datetime
 import json
