@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from .managers import CustomUserManager
@@ -48,7 +47,7 @@ class Order(models.Model):
         order_items = self.orderitem_set.all()
         shipping = False
         for item in order_items:
-            if item.product.digital == False:
+            if item.product.digital is False:
                 shipping = True
 
         return shipping
@@ -65,9 +64,8 @@ class Product(models.Model):
 
     @property
     def imageURL(self):
-        try:
-            url = self.image.url
-        except:
+        url = self.image.url
+        if not url:
             url = ''
         return url
 

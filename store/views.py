@@ -1,17 +1,13 @@
-from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, UpdateView, View, CreateView, FormView
-from .models import *
-import pdb
-import datetime
+from django.views.generic import TemplateView, ListView, View, CreateView, FormView
+from .models import Product, Order, OrderItem, ShippingAddress, Customer
 import json
 from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
 from django.contrib.auth import views as auth_views
 from .forms import ShippingAddressForm
-from .serializers import *
+from .serializers import OrderSerializer
 
 
 class SignUpView(CreateView):
