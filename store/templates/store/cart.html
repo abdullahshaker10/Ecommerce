@@ -10,7 +10,7 @@
 				<table class="table">
 					<tr>
 						<th><h5>Items: <strong>{{num_items}}</strong></h5></th>
-						<th><h5>Total:<strong> ${{total}}</strong></h5></th>
+						<th><h5>Total:<strong> ${{total |floatformat:2}}</strong></h5></th>
 						<th>
 							<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
 						</th>
@@ -34,14 +34,14 @@
 					<div style="flex:2"><p>{{item.product.name}}</p></div>
 					<div style="flex:1"><p>{{item.product.price}}</p></div>
 					<div style="flex:1">
-						<p class="quantity">{{item.quantity}}</p>
+						<p id = "{{item.id}}" class="quantity">{{item.quantity}}</p>
 						<div class="quantity">
-							<img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}">
+							<img data-product="{{item.product.id}}" data-order="{{item.order_id}}" data-item="{{item.id}}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}">
 					
-							<img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}">
+							<img data-product="{{item.product.id}}" data-order="{{item.order_id}}" data-item="{{item.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}">
 						</div>
 					</div>
-					<div style="flex:1"><p>{{item.get_total}}</p></div>
+					<div style="flex:1"><p>{{item.get_total |floatformat:2}}</p></div>
                 </div>
                 {% endfor %}
 

@@ -12,6 +12,8 @@ from .forms import SignUpForm
 from django.contrib.auth import views as auth_views
 from .forms import ShippingAddressForm
 from .serializers import *
+from rest_framework.generics import UpdateAPIView
+from .serializers import OrderSerializer
 
 
 class SignUpView(CreateView):
@@ -41,6 +43,8 @@ class Store(LoginRequiredMixin, ListView):
         # pdb.set_trace()
         order, created = Order.objects.get_or_create(
             customer=customer, compleated=False)
+        context['order_id'] = order.id
+
         context['num_items'] = order.get_cart_items
         context['products'] = self.queryset
         return context
@@ -97,13 +101,14 @@ class CheckOut(FormView):
         return context
 
 
-class AddtoChart(View):
+class AddtoChart(UpdateAPIView):
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
 
-    def post(self, request, *args, **kwargs):
+    def update(self, request, *args, **kwargs):
         data = json.loads(request.body)
         customer = self.request.user
         product_id = int(data['productId'])
-        action = data['action']
         order, created = Order.objects.get_or_create(
             customer=customer, compleated=False)
 
@@ -111,6 +116,32 @@ class AddtoChart(View):
 
         new_item, created = OrderItem.objects.get_or_create(
             order=order, product=product)
+
+        new_item.quantity = new_item.quantity + 1
+        new_item.save()
+#        pdb.set_trace()
+
+        return super(AddtoChart, self).update(request, *args, **kwargs)
+
+
+class UpdateItem(UpdateAPIView):
+    serializer_class = ItemSerializer
+    queryset = OrderItem.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        product_id = int(data['productId'])
+        action = data['action']
+        item_id = data['item']
+
+        customer = self.request.user
+
+        order, created = Order.objects.get_or_create(
+            customer=customer, compleated=False)
+        product = Product.objects.get(id=product_id)
+
+        new_item, created = OrderItem.objects.get_or_create(
+            order=order, product=product, id=item_id)
 
         if action == 'remove':
             new_item.quantity = new_item.quantity - 1
@@ -122,5 +153,6 @@ class AddtoChart(View):
             new_item.delete()
         else:
             new_item.save()
+#        pdb.set_trace()
 
-        return JsonResponse('item added', safe=False)
+        return super(UpdateItem, self).update(request, *args, **kwargs)

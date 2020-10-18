@@ -8,4 +8,7 @@ urlpatterns = [
     path('login/', views.LoginView.as_view(), name='login'),
     path('register/', views.SignUpView.as_view(), name='register'),
     path('logout/', views.LogoutView.as_view(), name='logout_'),
+    path('api/orders/<pk>', views.AddtoChart.as_view()),
+    path('api/items/<pk>', views.UpdateItem.as_view())
+
 ]
