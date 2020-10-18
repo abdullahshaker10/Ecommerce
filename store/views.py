@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, View, CreateView, FormView
+from django.views.generic import TemplateView, ListView, CreateView, FormView
 from .models import Order, Product, OrderItem, ShippingAddress
 import json
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,7 +8,6 @@ from django.contrib.auth import views as auth_views
 from .forms import ShippingAddressForm
 from .serializers import OrderSerializer, ItemSerializer
 from rest_framework.generics import UpdateAPIView
-from .serializers import OrderSerializer
 
 
 class SignUpView(CreateView):
