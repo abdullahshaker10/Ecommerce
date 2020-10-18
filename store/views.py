@@ -1,16 +1,12 @@
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, View, CreateView, FormView
 from .models import Order, Product, OrderItem, ShippingAddress
-import pdb
-import datetime
 import json
-from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
 from django.contrib.auth import views as auth_views
 from .forms import ShippingAddressForm
-from .serializers import *
+from .serializers import OrderSerializer, ItemSerializer
 from rest_framework.generics import UpdateAPIView
 from .serializers import OrderSerializer
 
@@ -118,8 +114,6 @@ class AddtoChart(UpdateAPIView):
 
         new_item.quantity = new_item.quantity + 1
         new_item.save()
-#        pdb.set_trace()
-
         return super(AddtoChart, self).update(request, *args, **kwargs)
 
 
@@ -152,6 +146,5 @@ class UpdateItem(UpdateAPIView):
             new_item.delete()
         else:
             new_item.save()
-#        pdb.set_trace()
 
         return super(UpdateItem, self).update(request, *args, **kwargs)
