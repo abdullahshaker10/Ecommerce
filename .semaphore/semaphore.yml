@@ -31,7 +31,6 @@ blocks:
             - python manage.py migrate
         - name: Checklist
           commands:
-            - cd martor_demo
             - python manage.py check --deploy
         - name: Style check
           commands:
