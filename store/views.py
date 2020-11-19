@@ -25,7 +25,7 @@ class LogoutView(auth_views.LogoutView):
     template_name = 'store/logout.html'
 
 
-class Store(LoginRequiredMixin, ListView):
+class Store(ListView):
     login_url = '/login/'
     redirect_field_name = 'store'
     template_name = 'store/store.html'
@@ -34,12 +34,11 @@ class Store(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         customer = self.request.user
-        # pdb.set_trace()
-        order, created = Order.objects.get_or_create(
-            customer=customer, compleated=False)
-        context['order_id'] = order.id
-
-        context['num_items'] = order.get_cart_items
+        if customer.is_authenticated:
+            order, created = Order.objects.get_or_create(
+                customer=customer, compleated=False)
+            context['order_id'] = order.id
+            context['num_items'] = order.get_cart_items
         context['products'] = self.queryset
         return context
 
@@ -59,7 +58,7 @@ class Cart(TemplateView):
         return context
 
 
-class CheckOut(FormView):
+class CheckOut(LoginRequiredMixin, FormView):
     template_name = 'store/checkout.html'
     form_class = ShippingAddressForm
     success_url = '/'
